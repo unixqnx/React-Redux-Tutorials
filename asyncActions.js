@@ -1,7 +1,9 @@
 const redux = require('redux');
+const thunkMiddleware = require('redux-thunk').default;
+
 const createStore = redux.createStore;
-
-
+const applyMiddleware = redux.applyMiddleware;
+const axios = require('axios');
 
 const initialStates = {
     loading: false,
@@ -35,35 +37,51 @@ const fetchUsersFailure = error => {
     };
 };
 
-
-
-
 const reducer = (state = initialStates, action) => {
     switch(action.type){
         case FETCH_USERS_REQUEST :
-            return {
-                ...state,
-                loading: true
-            };
+            let r ={};
+            Object.assign(r, state);
+            //...state, 
+            r.loading = true;          
+            return r
         case FETCH_USERS_SUCCESS :
-            return {
-                ...state,
-                loading: false,
-                users: action.payload,
-                error: ''
-            };
-        case FETCH_USERS_FAILURE :    
-            return {
-                ...state,
-                loading: false,
-                users: [],
-                error: action.payload            
-            };
+            let r1 ={};
+            Object.assign(r1, state);
+            //...state,
+            r1.loading = false;
+            r1.users = action.payload;
+            r1.error = '';
+            return r1;
+        case FETCH_USERS_FAILURE :
+            let r2 ={};
+            Object.assign(r2, state);   
+            //...state,
+            r2.loading = false;
+            r2.users = [];
+            r2.error = action.payload;
+            return r2;
+        default: return state;
     }
 }
 
+const fetchUsers = () => {
+    return function(dispatch){
+        dispatch(fetchUsersRequest());
+        axios.get('https://jsonplaceholder.typicode.com/users')
+        .then(response => {
+            //response.data is array of users
+            const users = response.data.map(user => user.id);
+            dispatch(fetchUsersSuccess(users));
+        })
+        .catch(error => {
+            //error.message
+            dispatch(fetchUsersFailure(error.message));
+        });
+    };
+};
 
-const store = createStore(reducer);
-
-
+const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+store.subscribe(() => {console.log(store.getState())});
+store.dispatch(fetchUsers());
 

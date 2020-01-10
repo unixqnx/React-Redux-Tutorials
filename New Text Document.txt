@@ -1,4 +1,6 @@
 npm init --yes
 npm install redux
                     node index From index.js
-npm install redux-logger                    
+npm install redux-logger
+npm install axios redux-thunk
+                    node .\asyncActions.js                    
