@@ -1,4 +1,6 @@
-// console.log('From index.js');
+const redux = require('redux');
+const createStore = redux.createStore;
+
 const BUY_CAKE = 'BUY_CAKE'
 
 function buyCake(){
@@ -16,12 +18,39 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
-        case BUY_CAKE: {
-            ...state,
-            numofCakes: state.numOfCakes-1
-        }
-
-        default: state
+        case BUY_CAKE: 
+        let r ={};
+        Object.assign(r, state);
+        r.numOfCakes = r.numOfCakes - 1;
+        return r;
+        default: return state
     }
 }
+
+// const reducer = (state = initialState, action) => {
+//     switch(action.type){
+//         case BUY_CAKE: return {
+//             //...state,
+//             numofCakes: state.numOfCakes - 1
+            
+//         }
+
+//         default: return state
+//     }
+// }
+
+const store = createStore(reducer);
+console.log('initial state', store.getState());
+const unsubscribe = store.subscribe(() => console.log('Updated state', store.getState()));
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+unsubscribe();
+
+
+
+
+
+
+
 
