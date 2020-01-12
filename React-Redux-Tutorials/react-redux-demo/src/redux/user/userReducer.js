@@ -13,21 +13,21 @@ const userReducer = (state = initialStates, action) => {
         case FETCH_USERS_REQUEST :
             return {
                 ...state,
-                loading = true
+                loading: true
             };
         case FETCH_USERS_SUCCESS :
             return {
                 ...state,
-                loading = false,
-                users = action.payload,
-                error = ''
+                loading: false,
+                users: action.payload,
+                error: ''
             };
         case FETCH_USERS_FAILURE :
             return {
                 ...state,
-                loading = false,
-                users = [],
-                error = action.payload
+                loading: false,
+                users: [],
+                error: action.payload
             };
         default: return state;
     }
