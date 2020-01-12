@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import CakeContainer from './components/CakeContainer';
+import HooksCakeContainer from './components/HooksCakeContainer';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
@@ -10,6 +11,7 @@ function App() {
     <Provider store = {store}>
       <div className="App">
         <CakeContainer/>
+        <HooksCakeContainer/>
       </div>
     </Provider>
   );
